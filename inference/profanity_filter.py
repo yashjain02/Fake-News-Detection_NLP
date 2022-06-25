@@ -6,6 +6,4 @@ model = joblib.load('../models/model.joblib', mmap_mode=None)
 
 
 def predict(texts):
-    data = vectorizer.transform(texts)
-    model(data)
-    return model(data)
+    return model.predict(vectorizer.transform(texts))
