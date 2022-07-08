@@ -4,17 +4,27 @@ import streamlit as st
 import text_preprocessing
 st.title('Fake news and profinity detection')
 
-input_data = [st.text_input('ID'), st.text_input('title'), st.text_input('author'), st.text_input('text')]
+input_data = [st.text_input('title'), st.text_input('author'), st.text_input('text')]
 
-input_data = pd.DataFrame([input_data], columns=['id', 'title', 'author', 'text'])
+input_data = pd.DataFrame([input_data], columns=['title', 'author', 'text'])
+
 
 if st.button('predict'):
-    x = text_preprocessing.stemming(input_data)
-    cv = joblib.load('joblib/bagofwords')
-    x = cv.transform(x)
-    pred = joblib.load('joblib/model')
-    x = pred.predict(x)
-    if x[0] == 1:
-      st.success('Its a fake news')
+    features = text_preprocessing.stemming(input_data)
+    bagofwords = joblib.load('joblib/bagofwords')
+    features = bagofwords.transform(features)
+    prediction = joblib.load('joblib/model')
+    features = prediction.predict(features)
+    profaniy_test = joblib.load('joblib/vectorizer')
+    profanity = profaniy_test.transform(input_data['text'])
+    profanity_model = joblib.load('joblib/profanity_model')
+    profanity_prediction = profanity_model.predict(profanity)
+    if features[0] == 1:
+        st.success('Its a fake news')
     else:
-        st.success('true news')
+        st.success('Its is a true news')
+    print(profanity_prediction)
+    if profanity_prediction[0] == 1:
+        st.success('Profanity detected')
+    else:
+        st.success('No Profanity found')
