@@ -1,9 +1,11 @@
+import nltk
+
 import joblib
 from sklearn.feature_extraction.text import CountVectorizer
 from nltk.corpus import stopwords
 import re
 from nltk.stem import PorterStemmer
-
+nltk.download('stopwords')
 
 def drop_null(features):
     features = features.dropna()
@@ -17,6 +19,7 @@ def stemming(features):
         review = re.sub('[^a-zA-Z]', ' ', features['title'][i])
         review = review.lower()
         review = review.split()
+        nltk.download('stopwords')
         review = [ps.stem(word) for word in review if word not in stopwords.words('english')]
         review = ' '.join(review)
         corpus.append(review)
