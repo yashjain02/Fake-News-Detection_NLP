@@ -2,7 +2,7 @@ import pandas as pd
 import text_preprocessing
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import PassiveAggressiveClassifier
-from sklearn.metrics import recall_score
+from sklearn.metrics import recall_score, confusion_matrix, precision_score, f1_score, accuracy_score
 import joblib
 
 
@@ -18,6 +18,11 @@ classifier.fit(X_train, Y_train)
 joblib.dump(classifier,'joblib/model',protocol=5)
 prediction = classifier.predict(X_test)
 score = recall_score(Y_test, prediction)
+print(score)
+print(accuracy_score(Y_test,prediction))
+print(f1_score(Y_test,prediction))
+print(precision_score(Y_test,prediction))
+print(confusion_matrix(Y_test,prediction))
 
 
 

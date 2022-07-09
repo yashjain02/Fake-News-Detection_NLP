@@ -8,6 +8,7 @@ input_data = [st.text_input('title'), st.text_input('author'), st.text_input('te
 
 input_data = pd.DataFrame([input_data], columns=['title', 'author', 'text'])
 
+test = pd.read_csv('training-data/test.csv')
 
 if st.button('predict'):
     features = text_preprocessing.stemming(input_data)
@@ -28,3 +29,5 @@ if st.button('predict'):
         st.success('Profanity detected')
     else:
         st.success('No Profanity found')
+st.text('Some of the sample inputs for testing our model')
+st.dataframe(test)
